@@ -42,6 +42,7 @@
 - [Technology Stack](#-technology-stack)
 - [Project Structure](#-project-structure)
 - [Model Files](#-model-files)
+- [Dataset](#-dataset)
 - [Installation & Setup](#-installation--setup)
 - [Running the Application](#-running-the-application)
 - [API Reference](#-api-reference)
@@ -74,16 +75,20 @@ This project presents a **Hybrid Multimodal Fusion Framework** that:
 ### 🔬 AI Pipeline Visualization
 Watch the real-time ECG processing pipeline in action — from image upload through lead segmentation, preprocessing, contour extraction, and ensemble classification:
 
-[![ECG Pipeline Demo](https://img.youtube.com/vi/w2KlGjiJKcw/maxresdefault.jpg)](https://www.youtube.com/watch?v=w2KlGjiJKcw&feature=youtu.be)
+[![ECG Pipeline Demo](https://img.youtube.com/vi/w2KlGjiJKcw/hqdefault.jpg)](https://www.youtube.com/watch?v=w2KlGjiJKcw&feature=youtu.be)
 
 > 🔗 **Pipeline Video:** [https://www.youtube.com/watch?v=w2KlGjiJKcw](https://www.youtube.com/watch?v=w2KlGjiJKcw&feature=youtu.be)
 
 ### 🖥️ Full End-to-End Project Demonstration
 Complete walkthrough of the clinical platform — authentication, role-based dashboards, ECG upload, AI analysis, explainability reports, and doctor review:
 
-[![Full Project Demo](https://img.youtube.com/vi/UqMDbNdvumw/maxresdefault.jpg)](https://www.youtube.com/watch?v=UqMDbNdvumw)
+[![Full Project Demo](https://img.youtube.com/vi/UqMDbNdvumw/hqdefault.jpg)](https://www.youtube.com/watch?v=UqMDbNdvumw)
 
 > 🔗 **Full Demo Video:** [https://www.youtube.com/watch?v=UqMDbNdvumw](https://www.youtube.com/watch?v=UqMDbNdvumw)
+
+### 📑 FYP Report Document
+
+> 📄 **Full Project Report (PDF):** [View on OneDrive](https://1drv.ms/b/c/cacb8574e4143f96/IQCqwrsV6Q-cTYa7G69ti-TaAXXVVbeFk05RqabcuNc8ETk?e=TJXQ4W)
 
 ---
 
@@ -94,7 +99,7 @@ Complete walkthrough of the clinical platform — authentication, role-based das
 - **Automated 13-Lead Segmentation** — Pixel-coordinate cropping of standard 12-lead + Long Lead II
 - **Image-to-Signal Conversion** — Otsu thresholding → contour extraction → 1D voltage signal conversion
 - **PCA Dimensionality Reduction** — 3,060 features compressed to 400 principal components
-- **Ensemble Classification** — VotingClassifier combining SVM, KNN, Random Forest, Naive Bayes, and Logistic Regression
+- **Ensemble Classification (93% Accuracy)** — VotingClassifier combining SVM, KNN, Random Forest, Naive Bayes, and Logistic Regression
 - **4-Class Diagnosis** — Normal, Abnormal Heartbeat, Myocardial Infarction, History of MI
 - **Real-Time SSE Streaming** — 10-step pipeline progress streamed live to the browser via Server-Sent Events
 
@@ -174,7 +179,7 @@ Complete walkthrough of the clinical platform — authentication, role-based das
 │  │  │  ┌──────────────────────────────────────────────────┐  │  │       │
 │  │  │  │  Model Files (.pkl)                              │  │  │       │
 │  │  │  │  • PCA_ECG (1).pkl (9.4 MB — 3060→400 dims)     │  │  │       │
-│  │  │  │  • Heart_Disease_Prediction.pkl (7.5 MB — Ens.)  │  │  │       │
+│  │  │  │  • Heart_Disease_Prediction.pkl (8 MB — Ens. 93%)│  │  │       │
 │  │  │  └──────────────────────────────────────────────────┘  │  │       │
 │  │  └────────────────────────────────────────────────────────┘  │       │
 │  └──────────────────────────────────────────────────────────────┘       │
@@ -488,7 +493,7 @@ Cardiovascular Disease Detection UI/
 │       ├── app.py                      # Legacy Flask API
 │       ├── final_app.py                # Streamlit demo app
 │       │
-│       ├── Heart_Disease_Prediction_using_ECG (4).pkl  # Ensemble classifier (7.5 MB)
+│       ├── Heart_Disease_Prediction_using_ECG (4).pkl  # Ensemble classifier (8 MB, 93% accuracy)
 │       ├── PCA_ECG (1).pkl                             # PCA transformer (9.4 MB)
 │       │
 │       ├── SimilarityPictures/         # SSIM reference ECG images
@@ -508,8 +513,31 @@ Cardiovascular Disease Detection UI/
 
 | File | Size | Description |
 |:-----|:----:|:------------|
-| `Heart_Disease_Prediction_using_ECG (4).pkl` | 7.5 MB | Scikit-Learn `VotingClassifier` ensemble (SVM + KNN + Random Forest + Naive Bayes + Logistic Regression). Trained on ECG image-derived features. Classifies into 4 CVD categories. Serialized with sklearn 1.0.1. |
-| `PCA_ECG (1).pkl` | 9.4 MB | Scikit-Learn `PCA` transformer. Reduces 3,060 raw signal features (12 leads × 255 samples) to 400 principal components for classifier input. |
+| `Heart_Disease_Prediction_using_ECG (4).pkl` | ~8 MB | Scikit-Learn `VotingClassifier` ensemble (SVM + KNN + Random Forest + Naive Bayes + Logistic Regression). **93% classification accuracy.** Trained on the Mendeley ECG Images dataset. Classifies into 4 CVD categories. Serialized with sklearn 1.0.1. |
+| `PCA_ECG (1).pkl` | ~9.4 MB | Scikit-Learn `PCA` transformer. Reduces 3,060 raw signal features (12 leads × 255 samples) to 400 principal components for classifier input. |
+
+---
+
+## 📊 Dataset
+
+The models were trained on the **ECG Images Dataset of Cardiac Patients** — a publicly available dataset from Mendeley Data contributed by researchers from Pakistan.
+
+| Detail | Info |
+|:-------|:-----|
+| **Dataset Name** | ECG Images Dataset of Cardiac Patients |
+| **Authors** | Khan, Ali Haider; Hussain, Muzammil |
+| **Year** | 2021 |
+| **Version** | V2 |
+| **DOI** | `10.17632/gwbz3fsgp8.2` |
+| **Link** | [https://data.mendeley.com/datasets/gwbz3fsgp8/2](https://data.mendeley.com/datasets/gwbz3fsgp8/2) |
+| **Classes** | Normal, Abnormal Heartbeat, Myocardial Infarction, History of MI |
+| **Format** | 12-lead ECG images (JPG) |
+
+**Citation:**
+```
+Khan, Ali Haider; Hussain, Muzammil (2021), "ECG Images dataset of Cardiac Patients",
+Mendeley Data, V2, doi: 10.17632/gwbz3fsgp8.2
+```
 
 > ⚠️ **Compatibility Note:** These models were serialized with Scikit-Learn **1.0.1**. The `fastapi_app.py` includes runtime monkey-patches for tree node dtype, scorer, and `monotonic_cst` attribute to ensure compatibility with Scikit-Learn **1.4+**.
 
@@ -724,9 +752,11 @@ This project is developed as a **Final Year Project (FYP)** for a Bachelor's deg
 
 **Project Title:** Hybrid Multimodal Fusion Framework for Cardiovascular Disease Detection Using ECG
 
+📄 **Full FYP Report:** [View Document (PDF)](https://1drv.ms/b/c/cacb8574e4143f96/IQCqwrsV6Q-cTYa7G69ti-TaAXXVVbeFk05RqabcuNc8ETk?e=TJXQ4W)
+
 **Key Contributions:**
 1. An end-to-end image-based ECG classification system that does not require raw signal data or specialized hardware
-2. A novel combination of traditional image processing (SSIM, Otsu, contour extraction) with ensemble machine learning
+2. A novel combination of traditional image processing (SSIM, Otsu, contour extraction) with ensemble machine learning achieving **93% classification accuracy**
 3. A cardiologist-grade explainability module providing clinical-level PQRST wave analysis from image-extracted signals
 4. A full-stack clinical decision support platform with role-based workflows matching real hospital operations
 
