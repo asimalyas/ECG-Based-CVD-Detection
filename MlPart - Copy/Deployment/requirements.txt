@@ -1,11 +1,12 @@
 scikit-learn
 scikit-image
-unzip
 joblib
 pandas
+numpy
 matplotlib
 natsort
-streamlit
+scipy
+neurokit2
 fastapi
 uvicorn
 python-multipart
