@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECG Prediction</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+    h1 { text-align: center; }
+    input[type="file"] { display: block; margin: 20px 0; }
+    button { padding: 10px 20px; cursor: pointer; }
+    img { max-width: 100%; margin-top: 10px; border: 1px solid #ddd; padding: 5px; border-radius: 5px; }
+    .result { margin-top: 20px; }
+    .lead { margin-bottom: 10px; }
+    pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>ECG Prediction</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="uploadFile()">Upload & Predict</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+async function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = "<p>Processing...</p>";
+
+    if (!fileInput.files.length) {
+        alert("Please select a file.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.status !== 200) {
+            resultDiv.innerHTML = `<p style="color:red;">Error: ${data.error || data.message}</p>`;
+            return;
+        }
+
+        let html = "";
+
+        // Original Image
+        if (data.original_image_base64) {
+            html += `<h3>Original Image</h3>`;
+            html += `<img src="data:image/png;base64,${data.original_image_base64}">`;
+        }
+
+        // Grayscale Image
+        if (data.grayscale_image_base64) {
+            html += `<h3>Grayscale Image</h3>`;
+            html += `<img src="data:image/png;base64,${data.grayscale_image_base64}">`;
+        }
+
+        // Similarity Score
+        if (data.similarity_score !== undefined) {
+            html += `<h3>Similarity Score: ${data.similarity_score.toFixed(2)}</h3>`;
+        }
+
+        // Message if not similar
+        if (data.message) {
+            html += `<p style="color:red;">${data.message}</p>`;
+        }
+
+        // Leads
+        if (data.num_leads) {
+            html += `<h3>Leads (${data.num_leads})</h3>`;
+            data.leads_shapes.forEach((shape, idx) => {
+                html += `<div class="lead">Lead ${idx+1}: Shape ${shape}</div>`;
+            });
+        }
+
+        // 1D Signal
+        if (data.one_d_signal) {
+            html += `<h3>1D Signal</h3><pre>${JSON.stringify(data.one_d_signal)}</pre>`;
+        }
+
+        // Reduced Signal
+        if (data.reduced_signal) {
+            html += `<h3>Reduced Signal</h3><pre>${JSON.stringify(data.reduced_signal)}</pre>`;
+        }
+
+        // Prediction
+        if (data.prediction) {
+            html += `<h3>Prediction: ${data.prediction}</h3>`;
+        }
+
+        resultDiv.innerHTML = html;
+
+    } catch (err) {
+        console.error(err);
+        resultDiv.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+    }
+}
+</script>
+</body>
+</html>

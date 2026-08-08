@@ -1,0 +1,42 @@
+# Node / React
+node_modules/
+dist/
+build/
+.vite/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+venv/
+venv310/
+venv310_backup/
+
+# Backup / old folders
+MlPart - Copy/Deployment_BACKUP/
+MlPart - Copy/frontend/
+src_BACKUP_BEFORE_EXPLAINABILITY/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log* 
+
+# Backup files
+*.bak
