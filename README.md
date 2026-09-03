@@ -766,7 +766,8 @@ This project is developed as a **Final Year Project (FYP)** for a Bachelor's deg
 
 ### Authors
 
-- **Muhammad Asim Ilyas** — Full-Stack Development, ML Pipeline, System Architecture
+- **Muhammad Asim Ilyas** — ML Pipeline, System Architecture
+- **Ferdous Gulzar** — Full-Stack Development, System Architecture
 
 ### Acknowledgments
 
